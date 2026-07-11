@@ -1,11 +1,21 @@
 import React from 'react'
 import { MapPin, Star, Clock, Tag } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function RestaurantCard({ restaurant, onClick }) {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+    }
+    // Navigate to the restaurant menu
+    navigate(`/restaurant/${restaurant.id}`);
+  };
+
   return (
     <div 
-      onClick={onClick}
+      onClick={handleClick}
       className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-lg transition-all cursor-pointer min-w-[300px] w-[300px] flex-shrink-0"
     >
       <div className="relative h-40">
@@ -41,12 +51,11 @@ export default function RestaurantCard({ restaurant, onClick }) {
           </div>
         </div>
         
-        <Link 
-          to={`/restaurant/${restaurant.id}`}
+        <div 
           className="mt-4 w-full block text-center py-2 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 text-slate-700 rounded-xl transition-colors font-medium text-sm border border-slate-200"
         >
           View Menu
-        </Link>
+        </div>
       </div>
     </div>
   )

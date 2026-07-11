@@ -1,9 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { QrCode, Home, Star } from 'lucide-react'
 import { motion } from 'framer-motion'
+import useOrderStore from '../store/useOrderStore'
 
 export default function PickupPage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-indigo-600 flex flex-col relative overflow-hidden">
       {/* Background Decor */}
@@ -43,13 +45,16 @@ export default function PickupPage() {
             1.2 km away
           </p>
 
-          <Link 
-            to="/"
+          <button 
+            onClick={() => {
+              useOrderStore.getState().completeActiveOrder();
+              navigate('/');
+            }}
             className="w-full flex items-center justify-center gap-2 bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
           >
             <Home size={20} />
             Return Home
-          </Link>
+          </button>
         </motion.div>
       </div>
     </div>

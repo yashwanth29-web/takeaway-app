@@ -10,6 +10,7 @@ import RestaurantCard from '../components/restaurant/RestaurantCard'
 import { fetchRestaurants } from '../api/restaurantApi'
 import { fetchRoute } from '../api/routingApi'
 import ActiveOrderWidget from '../components/ActiveOrderWidget'
+import TopCartButton from '../components/cart/TopCartButton'
 
 // Fix Leaflet's default icon path issues with Webpack/Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -281,6 +282,9 @@ export default function DiscoveryPage() {
             {mode === 'route' ? 'Restaurants on your route' : `Restaurants within ${radius} km`}
           </h1>
           <p className="text-xs text-slate-500">{restaurants.length} places found</p>
+        </div>
+        <div className="pointer-events-auto">
+          <TopCartButton />
         </div>
       </header>
       

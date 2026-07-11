@@ -8,8 +8,8 @@ export default function ActiveOrderWidget() {
   const navigate = useNavigate();
   const { orders } = useOrderStore();
   
-  // Find the most recent active order (for demo purposes, just get the first one that is not completed)
-  const activeOrder = orders.find(o => o.status !== 'completed');
+  // Find the most recent active order placed by the customer
+  const activeOrder = orders.find(o => o.status !== 'completed' && o.isCustomerOrder);
 
   if (!activeOrder) return null;
 

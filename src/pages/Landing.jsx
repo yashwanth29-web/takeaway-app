@@ -7,6 +7,7 @@ import RESTAURANTS from '../mock/restaurants.json'
 import RestaurantCard from '../components/restaurant/RestaurantCard'
 import useCartStore from '../store/useCartStore'
 import ActiveOrderWidget from '../components/ActiveOrderWidget'
+import TopCartButton from '../components/cart/TopCartButton'
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('route'); // 'route' or 'nearby'
@@ -106,10 +107,13 @@ export default function LandingPage() {
               <span className="text-2xl font-bold text-slate-900 tracking-tight">RouteBite</span>
             </div>
             
-            <Link to="/owner/dashboard" className="px-4 py-2 bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md rounded-full text-sm font-bold text-slate-800 transition-colors flex items-center gap-2">
-              <ChefHat size={16} />
-              Owner Portal
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link to="/owner/dashboard" className="px-4 py-2 bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md rounded-full text-sm font-bold text-slate-800 transition-colors flex items-center gap-2">
+                <ChefHat size={16} />
+                <span className="hidden sm:inline">Owner Portal</span>
+              </Link>
+              <TopCartButton />
+            </div>
           </header>
 
           <motion.div 

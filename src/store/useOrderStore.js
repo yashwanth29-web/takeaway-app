@@ -65,6 +65,14 @@ const useOrderStore = create((set, get) => ({
     }));
   },
 
+  completeActiveOrder: () => {
+    set((state) => ({
+      orders: state.orders.map(order => 
+        (order.status !== 'completed' && order.isCustomerOrder) ? { ...order, status: 'completed' } : order
+      )
+    }));
+  },
+
   addOrder: (newOrder) => {
     set((state) => ({
       orders: [
@@ -72,7 +80,8 @@ const useOrderStore = create((set, get) => ({
           ...newOrder,
           id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
           time: new Date().toISOString(),
-          status: 'pending'
+          status: 'pending',
+          isCustomerOrder: true
         },
         ...state.orders
       ]

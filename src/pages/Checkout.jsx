@@ -2,11 +2,13 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, CreditCard, ChevronRight, ShoppingBag } from 'lucide-react'
 import useCartStore from '../store/useCartStore'
+import useOrderStore from '../store/useOrderStore'
 import menuData from '../mock/menu.json'
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cart, getTotalPrice } = useCartStore();
+  const { cart, getTotalPrice, clearCart, orderType } = useCartStore();
+  const { addOrder } = useOrderStore();
 
   const itemsTotal = getTotalPrice(menuData);
   const taxesAndFees = itemsTotal > 0 ? 1.50 : 0;
@@ -14,6 +16,27 @@ export default function CheckoutPage() {
   const deliveryDiscount = itemsTotal > 0 ? 3.99 : 0; // Simulated free delivery
   
   const finalTotal = itemsTotal + taxesAndFees + deliveryFee - deliveryDiscount;
+
+  const handleConfirmOrder = () => {
+    const items = Object.entries(cart).map(([itemId, qty]) => {
+      const item = menuData.find(m => m.id === itemId);
+      return { 
+        name: item?.name || 'Unknown Item', 
+        quantity: qty, 
+        price: item?.price || 0 
+      };
+    });
+
+    addOrder({
+      customerName: 'You', 
+      items,
+      total: finalTotal,
+      type: orderType || 'takeaway'
+    });
+
+    clearCart();
+    navigate('/tracking');
+  };
 
   return (
     <div 
@@ -100,7 +123,7 @@ export default function CheckoutPage() {
 
       <div className="p-4 bg-white/90 backdrop-blur-md border-t border-slate-200 max-w-lg mx-auto w-full relative z-10">
         <button 
-          onClick={() => navigate('/tracking')}
+          onClick={handleConfirmOrder}
           disabled={itemsTotal === 0}
           className="w-full bg-indigo-600 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition-colors"
         >
