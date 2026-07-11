@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, ShoppingBag, TrendingUp, Compass, Settings, LogOut, LayoutDashboard, Clock } from 'lucide-react';
+import { DollarSign, ShoppingBag, TrendingUp, Compass, Settings, LogOut, LayoutDashboard, Clock, ArrowLeft } from 'lucide-react';
 import useOrderStore from '../../store/useOrderStore';
 import StatCard from '../../components/owner/StatCard';
 import OrderCard from '../../components/owner/OrderCard';
@@ -52,9 +52,17 @@ export default function OwnerDashboard() {
       {/* MAIN CONTENT */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <header className="bg-white border-b border-slate-200 p-6 flex justify-between items-center z-10">
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">Welcome back, Partner</h1>
-            <p className="text-slate-500 font-medium text-sm mt-1">Here is what is happening with your restaurant today.</p>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => navigate('/')} 
+              className="md:hidden w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center shadow-sm text-slate-600 hover:bg-slate-100 transition-colors shrink-0"
+            >
+              <ArrowLeft size={20} />
+            </button>
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-900">Welcome back, Partner</h1>
+              <p className="text-slate-500 font-medium text-sm mt-1 hidden sm:block">Here is what is happening with your restaurant today.</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
              <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center font-bold text-slate-600 border-2 border-white shadow-sm">

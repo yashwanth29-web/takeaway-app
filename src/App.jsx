@@ -7,6 +7,7 @@ import CheckoutPage from './pages/Checkout'
 import TrackingPage from './pages/Tracking'
 import PickupPage from './pages/Pickup'
 import OwnerDashboard from './pages/owner/OwnerDashboard'
+import ProfilePage from './pages/Profile'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/tracking" element={<TrackingPage />} />
           <Route path="/pickup" element={<PickupPage />} />
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
     </Router>

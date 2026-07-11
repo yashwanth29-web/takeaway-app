@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MapPin, Navigation, Compass, Coffee, ShoppingBag, Utensils, Car, ChefHat, Route } from 'lucide-react'
+import { MapPin, Navigation, Compass, Coffee, ShoppingBag, Utensils, Car, ChefHat, Route, User } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import LOCATIONS from '../mock/hyderabad_locations.json'
 import RESTAURANTS from '../mock/restaurants.json'
@@ -111,6 +111,9 @@ export default function LandingPage() {
               <Link to="/owner/dashboard" className="px-4 py-2 bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md rounded-full text-sm font-bold text-slate-800 transition-colors flex items-center gap-2">
                 <ChefHat size={16} />
                 <span className="hidden sm:inline">Owner Portal</span>
+              </Link>
+              <Link to="/profile" className="w-10 h-10 bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md rounded-full text-slate-800 flex items-center justify-center transition-colors" title="My Profile">
+                <User size={20} />
               </Link>
               <TopCartButton />
             </div>
