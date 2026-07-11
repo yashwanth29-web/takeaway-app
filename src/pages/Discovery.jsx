@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import RestaurantCard from '../components/restaurant/RestaurantCard'
 import { fetchRestaurants } from '../api/restaurantApi'
 import { fetchRoute } from '../api/routingApi'
+import ActiveOrderWidget from '../components/ActiveOrderWidget'
 
 // Fix Leaflet's default icon path issues with Webpack/Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -300,6 +301,7 @@ export default function DiscoveryPage() {
           ))}
         </div>
       </div>
+      <ActiveOrderWidget />
     </div>
   )
 }

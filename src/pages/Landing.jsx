@@ -6,6 +6,7 @@ import LOCATIONS from '../mock/hyderabad_locations.json'
 import RESTAURANTS from '../mock/restaurants.json'
 import RestaurantCard from '../components/restaurant/RestaurantCard'
 import useCartStore from '../store/useCartStore'
+import ActiveOrderWidget from '../components/ActiveOrderWidget'
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('route'); // 'route' or 'nearby'
@@ -88,7 +89,7 @@ export default function LandingPage() {
       </AnimatePresence>
       
       {/* --- HERO SECTION WITH MAP BACKGROUND --- */}
-      <div className="relative h-[65vh] w-full bg-slate-200 shrink-0">
+      <div className="relative min-h-[65vh] w-full bg-slate-200 shrink-0 flex flex-col justify-center">
         <iframe 
           title="Map Background"
           src="https://www.openstreetmap.org/export/embed.html?bbox=78.3300,17.3600,78.5300,17.5300&layer=mapnik" 
@@ -96,7 +97,7 @@ export default function LandingPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-slate-50" />
         
-        <div className="absolute inset-0 flex flex-col pt-6 px-4 pb-12 z-10">
+        <div className="relative flex-1 flex flex-col pt-6 px-4 pb-16 z-10">
           <header className="flex justify-between items-center mb-8 max-w-5xl mx-auto w-full">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
@@ -294,6 +295,7 @@ export default function LandingPage() {
 
         </div>
       </div>
+      <ActiveOrderWidget />
     </div>
   )
 }
