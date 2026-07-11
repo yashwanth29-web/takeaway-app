@@ -36,14 +36,6 @@ export default function OwnerDashboard() {
             <LayoutDashboard size={20} />
             Dashboard
           </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-colors">
-            <ShoppingBag size={20} />
-            Menu Management
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl font-medium transition-colors">
-            <Settings size={20} />
-            Settings
-          </button>
         </nav>
 
         <div className="p-4 border-t border-slate-100">
