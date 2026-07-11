@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Navigation, Compass, Coffee, ShoppingBag, Utensils, Car, ChefHat, Route } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import LOCATIONS from '../mock/hyderabad_locations.json'
 import RESTAURANTS from '../mock/restaurants.json'
 import RestaurantCard from '../components/restaurant/RestaurantCard'
+import useCartStore from '../store/useCartStore'
 
 export default function LandingPage() {
   const [activeTab, setActiveTab] = useState('route'); // 'route' or 'nearby'
@@ -13,6 +14,7 @@ export default function LandingPage() {
   const [selectedNearMe, setSelectedNearMe] = useState(null);
   const [showNearMeDropdown, setShowNearMeDropdown] = useState(false);
   const navigate = useNavigate();
+  const { orderType, setOrderType } = useCartStore();
 
   const filteredNearMe = searchNearMe 
     ? LOCATIONS.filter(l => l.name.toLowerCase().includes(searchNearMe.toLowerCase()) || l.address.toLowerCase().includes(searchNearMe.toLowerCase())).slice(0, 5)
@@ -37,6 +39,53 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col">
+      <AnimatePresence>
+        {!orderType && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              className="bg-white rounded-[2rem] p-8 max-w-lg w-full shadow-2xl border border-white/20"
+            >
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Utensils size={32} />
+                </div>
+                <h2 className="text-3xl font-extrabold text-slate-900 mb-2">How are you eating today?</h2>
+                <p className="text-slate-500 font-medium">Select your preference to get started with RouteBite.</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setOrderType('dine-in')}
+                  className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer"
+                >
+                  <div className="w-12 h-12 bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-600 rounded-full flex items-center justify-center transition-colors">
+                    <Utensils size={24} />
+                  </div>
+                  <span className="font-bold text-slate-800 group-hover:text-indigo-900">Dine-in</span>
+                </button>
+
+                <button
+                  onClick={() => setOrderType('takeaway')}
+                  className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer"
+                >
+                  <div className="w-12 h-12 bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-600 rounded-full flex items-center justify-center transition-colors">
+                    <ShoppingBag size={24} />
+                  </div>
+                  <span className="font-bold text-slate-800 group-hover:text-indigo-900">Takeaway</span>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* --- HERO SECTION WITH MAP BACKGROUND --- */}
       <div className="relative h-[65vh] w-full bg-slate-200 shrink-0">
@@ -55,6 +104,11 @@ export default function LandingPage() {
               </div>
               <span className="text-2xl font-bold text-slate-900 tracking-tight">RouteBite</span>
             </div>
+            
+            <Link to="/owner/dashboard" className="px-4 py-2 bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md rounded-full text-sm font-bold text-slate-800 transition-colors flex items-center gap-2">
+              <ChefHat size={16} />
+              Owner Portal
+            </Link>
           </header>
 
           <motion.div 

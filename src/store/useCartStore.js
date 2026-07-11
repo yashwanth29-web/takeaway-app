@@ -2,7 +2,10 @@ import { create } from 'zustand'
 
 const useCartStore = create((set, get) => ({
   cart: {}, // { itemId: quantity }
+  orderType: null, // 'dine-in' or 'takeaway'
   
+  setOrderType: (type) => set({ orderType: type }),
+
   addToCart: (item) => {
     set((state) => ({
       cart: {

@@ -6,6 +6,7 @@ import RestaurantDetailsPage from './pages/RestaurantDetails'
 import CheckoutPage from './pages/Checkout'
 import TrackingPage from './pages/Tracking'
 import PickupPage from './pages/Pickup'
+import OwnerDashboard from './pages/owner/OwnerDashboard'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/tracking" element={<TrackingPage />} />
           <Route path="/pickup" element={<PickupPage />} />
+          <Route path="/owner/dashboard" element={<OwnerDashboard />} />
         </Routes>
       </div>
     </Router>
