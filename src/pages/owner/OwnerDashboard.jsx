@@ -307,15 +307,22 @@ export default function OwnerDashboard() {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <ImageIcon size={14} /> Cover Image URL
+                    <ImageIcon size={14} /> Upload Cover Image
                   </label>
                   <input 
-                    type="url"
-                    value={newRest.image}
-                    onChange={(e) => setNewRest({...newRest, image: e.target.value})}
-                    placeholder="https://..."
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-medium text-sm"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setNewRest({...newRest, image: URL.createObjectURL(file)});
+                      }
+                    }}
+                    className="w-full bg-slate-800 border border-slate-700 text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-500/20 file:text-indigo-400 hover:file:bg-indigo-500/30 rounded-xl px-4 py-2 focus:outline-none transition-all text-sm"
                   />
+                  {newRest.image && (
+                    <div className="mt-2 text-xs text-emerald-400 font-medium">Image selected</div>
+                  )}
                 </div>
 
                 <div className="pt-4">
