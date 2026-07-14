@@ -43,6 +43,8 @@ const generateMockOrders = () => {
   ];
 };
 
+import useRestaurantStore from './useRestaurantStore';
+
 const useOrderStore = create((set, get) => ({
   orders: generateMockOrders(),
   payouts: [], // { id, restaurantId, amount, date }
@@ -79,7 +81,10 @@ const useOrderStore = create((set, get) => ({
   },
 
   simulateOrder: () => {
-    const restaurantIds = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
+    const restaurants = useRestaurantStore.getState().restaurants;
+    const restaurantIds = restaurants.map(r => r.id);
+    if (restaurantIds.length === 0) return; // safeguard
+
     const randomRestaurant = restaurantIds[Math.floor(Math.random() * restaurantIds.length)];
     const total = parseFloat((Math.random() * 40 + 10).toFixed(2));
     const newOrder = {
