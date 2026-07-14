@@ -18,6 +18,12 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const { orderType, setOrderType } = useCartStore();
 
+  React.useEffect(() => {
+    if (!orderType) {
+      setOrderType('takeaway');
+    }
+  }, [orderType, setOrderType]);
+
   const filteredNearMe = searchNearMe 
     ? LOCATIONS.filter(l => l.name.toLowerCase().includes(searchNearMe.toLowerCase()) || l.address.toLowerCase().includes(searchNearMe.toLowerCase())).slice(0, 5)
     : [];
@@ -41,53 +47,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col">
-      <AnimatePresence>
-        {!orderType && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              className="bg-white rounded-[2rem] p-8 max-w-lg w-full shadow-2xl border border-white/20"
-            >
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Utensils size={32} />
-                </div>
-                <h2 className="text-3xl font-extrabold text-slate-900 mb-2">How are you eating today?</h2>
-                <p className="text-slate-500 font-medium">Select your preference to get started with RouteBite.</p>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  onClick={() => setOrderType('dine-in')}
-                  className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer"
-                >
-                  <div className="w-12 h-12 bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-600 rounded-full flex items-center justify-center transition-colors">
-                    <Utensils size={24} />
-                  </div>
-                  <span className="font-bold text-slate-800 group-hover:text-indigo-900">Dine-in</span>
-                </button>
-
-                <button
-                  onClick={() => setOrderType('takeaway')}
-                  className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group cursor-pointer"
-                >
-                  <div className="w-12 h-12 bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-600 rounded-full flex items-center justify-center transition-colors">
-                    <ShoppingBag size={24} />
-                  </div>
-                  <span className="font-bold text-slate-800 group-hover:text-indigo-900">Takeaway</span>
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       
       {/* --- HERO SECTION WITH MAP BACKGROUND --- */}
       <div className="relative min-h-[65vh] w-full bg-slate-200 shrink-0 flex flex-col justify-center">
@@ -128,7 +88,7 @@ export default function LandingPage() {
             <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-2">
               Order on the way.
             </h1>
-            <p className="text-slate-700 font-medium">Pick up without waiting.</p>
+            <p className="text-slate-700 font-medium">Pick up without waiting in {orderType === 'dine-in' ? 'DINE-IN' : 'PICK-UP'}.</p>
           </motion.div>
 
           {/* UBER STYLE FLOATING SEARCH CARD */}
@@ -138,6 +98,21 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="max-w-md mx-auto w-full bg-white/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/50"
           >
+            {/* Order Type Toggle */}
+            <div className="flex bg-slate-200/50 p-1 rounded-2xl mb-4">
+              <button 
+                onClick={() => setOrderType('takeaway')}
+                className={`flex-1 py-2 flex items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all ${orderType !== 'dine-in' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                <ShoppingBag size={16} /> Takeaway
+              </button>
+              <button 
+                onClick={() => setOrderType('dine-in')}
+                className={`flex-1 py-2 flex items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all ${orderType === 'dine-in' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                <Utensils size={16} /> Dine-in
+              </button>
+            </div>
             {/* Tabs */}
             <div className="flex bg-slate-100 p-1 rounded-2xl mb-6">
               <button 
