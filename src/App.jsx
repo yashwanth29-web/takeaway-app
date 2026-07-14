@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import LandingPage from './pages/Landing'
 import RoutePlannerPage from './pages/RoutePlanner'
 import DiscoveryPage from './pages/Discovery'
@@ -13,6 +14,7 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased">
+        <Toaster position="top-right" />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/plan-route" element={<RoutePlannerPage />} />

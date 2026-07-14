@@ -7,6 +7,8 @@ import StatCard from '../../components/owner/StatCard';
 import OrderCard from '../../components/owner/OrderCard';
 import { useNavigate } from 'react-router-dom';
 
+import RevenueChart from '../../components/owner/RevenueChart';
+
 export default function OwnerDashboard() {
   const { orders, updateOrderStatus, getRevenueStats, simulateOrder, processPayout, getRestaurantStats } = useOrderStore();
   const { restaurants, addRestaurant } = useRestaurantStore();
@@ -32,6 +34,16 @@ export default function OwnerDashboard() {
     setNewRest({ name: '', cuisine: '', image: '' });
     setIsModalOpen(false);
   };
+
+  const chartData = [
+    { name: 'Mon', revenue: stats.platformRevenue * 0.2 },
+    { name: 'Tue', revenue: stats.platformRevenue * 0.35 },
+    { name: 'Wed', revenue: stats.platformRevenue * 0.5 },
+    { name: 'Thu', revenue: stats.platformRevenue * 0.65 },
+    { name: 'Fri', revenue: stats.platformRevenue * 0.8 },
+    { name: 'Sat', revenue: stats.platformRevenue * 0.95 },
+    { name: 'Today', revenue: parseFloat(stats.platformRevenue) },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex font-sans selection:bg-indigo-500/30">
@@ -81,8 +93,8 @@ export default function OwnerDashboard() {
         {/* Ambient Glow */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <header className="bg-slate-900/50 backdrop-blur-xl border-b border-slate-800/50 p-6 lg:px-10 flex justify-between items-center z-10 sticky top-0">
-          <div className="flex items-center gap-4">
+        <header className="bg-slate-900/50 backdrop-blur-xl border-b border-slate-800/50 p-4 sm:p-6 lg:px-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 z-10 sticky top-0">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <button 
               onClick={() => navigate('/')} 
               className="md:hidden w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-slate-400 shrink-0"
@@ -90,15 +102,15 @@ export default function OwnerDashboard() {
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-black text-white tracking-tight">Command Center</h1>
-              <p className="text-slate-400 font-medium text-sm mt-1 hidden sm:block">Real-time marketplace telemetry & vendor payouts.</p>
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Command Center</h1>
+              <p className="text-slate-400 font-medium text-xs sm:text-sm mt-1 hidden sm:block">Real-time marketplace telemetry & vendor payouts.</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
              <motion.button 
                whileTap={{ scale: 0.95 }}
                onClick={handleSimulate}
-               className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm shadow-lg transition-all border ${isSimulating ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-amber-500/20' : 'bg-gradient-to-b from-amber-400 to-amber-600 text-slate-900 border-amber-400 hover:from-amber-300 hover:to-amber-500 shadow-amber-500/20'}`}
+               className={`w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm shadow-lg transition-all border ${isSimulating ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-amber-500/20' : 'bg-gradient-to-b from-amber-400 to-amber-600 text-slate-900 border-amber-400 hover:from-amber-300 hover:to-amber-500 shadow-amber-500/20'}`}
              >
                <Zap size={18} className={isSimulating ? 'animate-pulse' : ''} />
                Simulate Network Traffic
@@ -108,39 +120,43 @@ export default function OwnerDashboard() {
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-10 relative z-10">
           {/* STATS */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6 rounded-3xl shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <DollarSign size={80} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
+            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
+              <div className="absolute -top-4 -right-4 sm:top-0 sm:right-0 p-4 sm:p-6 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                <DollarSign size={80} className="scale-75 sm:scale-100 origin-top-right" />
               </div>
-              <div className="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mb-4">
-                <DollarSign size={24} />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500/20 text-indigo-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
+                <DollarSign size={20} className="sm:scale-110" />
               </div>
-              <h3 className="text-slate-400 font-bold text-sm mb-1 uppercase tracking-wider">Realized Revenue</h3>
-              <p className="text-4xl font-black text-white">${stats.platformRevenue}</p>
+              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Realized Revenue</h3>
+              <p className="text-2xl sm:text-4xl font-black text-white">${stats.platformRevenue}</p>
             </div>
             
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6 rounded-3xl shadow-lg relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <TrendingUp size={80} />
+            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
+              <div className="absolute -top-4 -right-4 sm:top-0 sm:right-0 p-4 sm:p-6 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                <TrendingUp size={80} className="scale-75 sm:scale-100 origin-top-right" />
               </div>
-              <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mb-4">
-                <TrendingUp size={24} />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500/20 text-emerald-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
+                <TrendingUp size={20} className="sm:scale-110" />
               </div>
-              <h3 className="text-slate-400 font-bold text-sm mb-1 uppercase tracking-wider">Vendor Payouts</h3>
-              <p className="text-4xl font-black text-white">${stats.totalPayouts}</p>
+              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Vendor Payouts</h3>
+              <p className="text-2xl sm:text-4xl font-black text-white">${stats.totalPayouts}</p>
             </div>
 
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6 rounded-3xl shadow-lg relative overflow-hidden group hover:border-purple-500/50 transition-colors">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ShoppingBag size={80} />
+            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-purple-500/50 transition-colors">
+              <div className="absolute -top-4 -right-4 sm:top-0 sm:right-0 p-4 sm:p-6 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                <ShoppingBag size={80} className="scale-75 sm:scale-100 origin-top-right" />
               </div>
-              <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center mb-4">
-                <ShoppingBag size={24} />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 text-purple-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
+                <ShoppingBag size={20} className="sm:scale-110" />
               </div>
-              <h3 className="text-slate-400 font-bold text-sm mb-1 uppercase tracking-wider">Total Network Orders</h3>
-              <p className="text-4xl font-black text-white">{stats.totalOrders}</p>
+              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Total Network Orders</h3>
+              <p className="text-2xl sm:text-4xl font-black text-white">{stats.totalOrders}</p>
             </div>
+          </div>
+
+          <div className="mb-10">
+            <RevenueChart data={chartData} />
           </div>
 
           {/* DYNAMIC CONTENT AREA */}
