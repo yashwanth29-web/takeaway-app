@@ -3,16 +3,25 @@ import { create } from 'zustand'
 const useCartStore = create((set, get) => ({
   cart: {}, // { itemId: quantity }
   orderType: null, // 'dine-in' or 'takeaway'
+  restaurantId: null,
   
   setOrderType: (type) => set({ orderType: type }),
 
   addToCart: (item) => {
-    set((state) => ({
-      cart: {
-        ...state.cart,
-        [item.id]: (state.cart[item.id] || 0) + 1
+    set((state) => {
+      let newCart = state.cart;
+      // If adding from a different restaurant, clear the cart
+      if (state.restaurantId && state.restaurantId !== item.restaurantId) {
+        newCart = {};
       }
-    }));
+      return {
+        restaurantId: item.restaurantId,
+        cart: {
+          ...newCart,
+          [item.id]: (newCart[item.id] || 0) + 1
+        }
+      };
+    });
   },
   
   removeFromCart: (item) => {
@@ -23,11 +32,14 @@ const useCartStore = create((set, get) => ({
       } else {
         delete newCart[item.id];
       }
-      return { cart: newCart };
+      return { 
+        cart: newCart,
+        restaurantId: Object.keys(newCart).length === 0 ? null : state.restaurantId
+      };
     });
   },
   
-  clearCart: () => set({ cart: {} }),
+  clearCart: () => set({ cart: {}, restaurantId: null }),
   
   getTotalItems: () => {
     const { cart } = get();

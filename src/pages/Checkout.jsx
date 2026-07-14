@@ -27,8 +27,12 @@ export default function CheckoutPage() {
       };
     });
 
+    // We fetch the latest state directly to ensure we get restaurantId
+    const currentRestaurantId = useCartStore.getState().restaurantId;
+
     addOrder({
       customerName: 'You', 
+      restaurantId: currentRestaurantId,
       items,
       total: finalTotal,
       type: orderType || 'takeaway'

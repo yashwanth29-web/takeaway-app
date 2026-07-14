@@ -4,58 +4,48 @@ const generateMockOrders = () => {
   return [
     {
       id: 'ORD-1001',
+      restaurantId: 'r1',
       customerName: 'Alice Johnson',
       items: [
-        { name: 'Spicy Chicken Burger', quantity: 2, price: 8.99 },
-        { name: 'French Fries', quantity: 1, price: 3.49 }
+        { name: 'Classic Cheeseburger', quantity: 2, price: 8.99 },
+        { name: 'Truffle Parmesan Fries', quantity: 1, price: 4.50 }
       ],
-      total: 21.47,
-      status: 'pending', // pending, preparing, ready, completed
+      total: 22.48,
+      status: 'pending',
       type: 'takeaway',
-      time: new Date(Date.now() - 5 * 60000).toISOString() // 5 mins ago
+      time: new Date(Date.now() - 5 * 60000).toISOString()
     },
     {
       id: 'ORD-1002',
+      restaurantId: 'r3',
       customerName: 'Bob Smith',
       items: [
-        { name: 'Margherita Pizza', quantity: 1, price: 12.99 },
-        { name: 'Garlic Bread', quantity: 1, price: 4.99 },
-        { name: 'Cola', quantity: 2, price: 1.99 }
+        { name: 'Sushi Platter', quantity: 1, price: 24.99 }
       ],
-      total: 21.96,
+      total: 24.99,
       status: 'preparing',
       type: 'dine-in',
-      time: new Date(Date.now() - 15 * 60000).toISOString() // 15 mins ago
+      time: new Date(Date.now() - 15 * 60000).toISOString()
     },
     {
       id: 'ORD-1003',
+      restaurantId: 'r2',
       customerName: 'Charlie Brown',
       items: [
-        { name: 'Vegan Bowl', quantity: 1, price: 11.50 },
+        { name: 'Avocado Toast', quantity: 1, price: 8.50 },
         { name: 'Smoothie', quantity: 1, price: 5.50 }
       ],
-      total: 17.00,
-      status: 'ready',
-      type: 'takeaway',
-      time: new Date(Date.now() - 25 * 60000).toISOString() // 25 mins ago
-    },
-    {
-      id: 'ORD-1004',
-      customerName: 'Diana Prince',
-      items: [
-        { name: 'Sushi Platter', quantity: 1, price: 24.99 },
-        { name: 'Miso Soup', quantity: 2, price: 2.99 }
-      ],
-      total: 30.97,
+      total: 14.00,
       status: 'completed',
-      type: 'dine-in',
-      time: new Date(Date.now() - 60 * 60000).toISOString() // 1 hour ago
+      type: 'takeaway',
+      time: new Date(Date.now() - 60 * 60000).toISOString()
     }
   ];
 };
 
 const useOrderStore = create((set, get) => ({
   orders: generateMockOrders(),
+  payouts: [], // { id, restaurantId, amount, date }
 
   updateOrderStatus: (orderId, newStatus) => {
     set((state) => ({
@@ -88,20 +78,75 @@ const useOrderStore = create((set, get) => ({
     }));
   },
 
-  getRevenueStats: () => {
-    const { orders } = get();
-    // For a real app, this would only count 'completed' or paid orders.
-    // Here we count everything to show data.
-    const completedOrders = orders.filter(o => o.status === 'completed' || o.status === 'ready' || o.status === 'preparing' || o.status === 'pending');
+  simulateOrder: () => {
+    const restaurantIds = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
+    const randomRestaurant = restaurantIds[Math.floor(Math.random() * restaurantIds.length)];
+    const total = parseFloat((Math.random() * 40 + 10).toFixed(2));
+    const newOrder = {
+      restaurantId: randomRestaurant,
+      customerName: 'Simulated User',
+      items: [{ name: 'Simulated Item', quantity: 1, price: total }],
+      total: total,
+      type: 'takeaway'
+    };
+    get().addOrder(newOrder);
+  },
+
+  processPayout: (restaurantId) => {
+    const { getRestaurantStats } = get();
+    const stats = getRestaurantStats(restaurantId);
     
-    const totalRevenue = completedOrders.reduce((sum, order) => sum + order.total, 0);
-    const totalOrders = completedOrders.length;
-    const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+    if (stats.pendingPayout > 0) {
+      set((state) => ({
+        payouts: [
+          ...state.payouts,
+          {
+            id: `PAY-${Date.now()}`,
+            restaurantId,
+            amount: stats.pendingPayout,
+            date: new Date().toISOString()
+          }
+        ]
+      }));
+    }
+  },
+
+  getRevenueStats: () => {
+    const { orders, payouts } = get();
+    const allOrders = orders; // Using all for demo
+    
+    const totalGrossRevenue = allOrders.reduce((sum, order) => sum + order.total, 0);
+    const totalOrders = allOrders.length;
+    
+    // Total vendor payouts is the sum of all payouts processed
+    const totalPayouts = payouts.reduce((sum, pay) => sum + pay.amount, 0);
+    
+    // Realized Platform Revenue is calculated based on disbursed amounts
+    // Since payout = 90% of gross, the 10% platform fee is (payout / 9)
+    const platformRevenue = totalPayouts / 9;
 
     return {
-      totalRevenue: totalRevenue.toFixed(2),
-      totalOrders,
-      averageOrderValue: averageOrderValue.toFixed(2)
+      totalGrossRevenue: totalGrossRevenue.toFixed(2),
+      platformRevenue: platformRevenue.toFixed(2),
+      totalPayouts: totalPayouts.toFixed(2),
+      totalOrders
+    };
+  },
+
+  getRestaurantStats: (restaurantId) => {
+    const { orders, payouts } = get();
+    const restOrders = orders.filter(o => o.restaurantId === restaurantId);
+    
+    const grossRevenue = restOrders.reduce((sum, order) => sum + order.total, 0);
+    const netRevenue = grossRevenue * 0.90; // Restaurant keeps 90%
+    const paidOut = payouts.filter(p => p.restaurantId === restaurantId).reduce((sum, p) => sum + p.amount, 0);
+    const pendingPayout = netRevenue - paidOut;
+
+    return {
+      totalOrders: restOrders.length,
+      grossRevenue,
+      netRevenue,
+      pendingPayout
     };
   }
 }));
