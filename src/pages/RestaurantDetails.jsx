@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, Star, Clock, Search } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchRestaurantById, fetchMenuByRestaurantId } from '../api/restaurantApi'
@@ -10,6 +10,9 @@ import FloatingCart from '../components/cart/FloatingCart';
 
 export default function RestaurantDetailsPage() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const promo = searchParams.get('promo');
+  const promoTitle = searchParams.get('title');
   
   const { data: restaurant, isLoading: isLoadingRestaurant } = useQuery({
     queryKey: ['restaurant', id],
@@ -75,6 +78,18 @@ export default function RestaurantDetailsPage() {
           )}
         </div>
       </div>
+ 
+      {/* Active Promo Applied Alert */}
+      {promo && (
+        <div className="mx-4 mt-2 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-2xl p-4 shadow-lg flex justify-between items-center relative overflow-hidden">
+          <div className="absolute -right-4 -bottom-4 text-6xl opacity-15 select-none">🌶️</div>
+          <div>
+            <span className="text-[9px] font-black tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full">Active Deal Applied</span>
+            <h4 className="font-extrabold text-base mt-2 leading-tight">{promoTitle || 'Special Offer'}</h4>
+            <p className="text-xs text-white/90 font-medium mt-0.5">Use code <span className="font-bold font-mono bg-white text-slate-800 px-1.5 py-0.5 rounded">{promo}</span> at checkout for discount!</p>
+          </div>
+        </div>
+      )}
 
       {/* Quick Info Bar */}
       <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-white text-sm">
