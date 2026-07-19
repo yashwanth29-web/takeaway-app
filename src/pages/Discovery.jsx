@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, MapPin } from 'lucide-react'
+import { ArrowLeft, MapPin, Search } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline, Circle } from 'react-leaflet'
 import L from 'leaflet'
@@ -103,15 +103,17 @@ export default function DiscoveryPage() {
 
   const [restaurants, setRestaurants] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
-
+  const [searchQuery, setSearchQuery] = useState('');
+ 
   useEffect(() => {
     if (!restaurantsData) return;
     
+    let baseList = [];
     if (mode === 'nearby') {
       if (nearbyLat && nearbyLng) {
         // Specifically selected a location, show exactly 10 restaurants around it based on radius
         const selected = restaurantsData.slice(0, 10);
-        const mappedToRadius = selected.map(r => {
+        baseList = selected.map(r => {
           // Generate uniform random points strictly within the circle
           const rInDeg = radius / 111; // 1 degree is approx 111km
           const angle = Math.random() * 2 * Math.PI;
@@ -125,10 +127,8 @@ export default function DiscoveryPage() {
             coordinates: { lat: randomLat, lng: randomLng }
           };
         });
-        setRestaurants(mappedToRadius);
       } else {
-        const filtered = restaurantsData.filter(r => parseFloat(r.distance) <= radius);
-        setRestaurants(filtered);
+        baseList = restaurantsData.filter(r => parseFloat(r.distance) <= radius);
       }
     } else if (mode === 'route') {
       if (routeCoordinates && routeCoordinates.length > 0) {
@@ -136,7 +136,7 @@ export default function DiscoveryPage() {
         const selected = restaurantsData.slice(0, 10);
         const step = Math.max(1, Math.floor(routeCoordinates.length / 11)); // divide route into segments
         
-        const mappedToRoute = selected.map((r, index) => {
+        baseList = selected.map((r, index) => {
           const coordIndex = Math.min((index + 1) * step, routeCoordinates.length - 2); // Avoid origin/dest exact overlap
           return {
             ...r,
@@ -146,14 +146,22 @@ export default function DiscoveryPage() {
             }
           };
         });
-        setRestaurants(mappedToRoute);
       } else {
-        setRestaurants([]);
+        baseList = [];
       }
     } else {
-      setRestaurants(restaurantsData);
+      baseList = restaurantsData;
     }
-  }, [mode, radius, restaurantsData, routeCoordinates ? routeCoordinates.map(c => `${c[0]},${c[1]}`).join('|') : '']);
+
+    if (searchQuery) {
+      baseList = baseList.filter(r => 
+        r.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        r.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setRestaurants(baseList);
+  }, [mode, radius, restaurantsData, searchQuery, routeCoordinates ? routeCoordinates.map(c => `${c[0]},${c[1]}`).join('|') : '']);
 
   const handlePinClick = (id) => {
     setSelectedPin(id);
@@ -277,11 +285,23 @@ export default function DiscoveryPage() {
         <Link to="/" className="p-3 bg-white/90 backdrop-blur-md rounded-xl shadow-lg hover:bg-white transition-colors pointer-events-auto">
           <ArrowLeft size={20} className="text-slate-900" />
         </Link>
-        <div className="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg flex-1 pointer-events-auto">
-          <h1 className="font-bold text-slate-900 text-sm">
-            {mode === 'route' ? 'Restaurants on your route' : `Restaurants within ${radius} km`}
-          </h1>
-          <p className="text-xs text-slate-500">{restaurants.length} places found</p>
+        <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg flex-1 flex items-center gap-2 pointer-events-auto border border-slate-200/50">
+          <Search size={18} className="text-slate-400 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <input 
+              type="text" 
+              placeholder={mode === 'route' ? 'Search route restaurants...' : 'Search nearby restaurants...'} 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-transparent border-none outline-none text-slate-800 text-sm font-bold placeholder-slate-400 py-0.5"
+            />
+            <p className="text-[10px] text-slate-400 font-bold leading-none mt-0.5">
+              {restaurants.length} {restaurants.length === 1 ? 'place' : 'places'} found
+            </p>
+          </div>
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-600 font-extrabold text-xs px-1">✕</button>
+          )}
         </div>
         <div className="pointer-events-auto">
           <TopCartButton />

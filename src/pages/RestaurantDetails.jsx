@@ -26,6 +26,8 @@ export default function RestaurantDetailsPage() {
   
   const [vegFilter, setVegFilter] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchInput, setShowSearchInput] = useState(false);
 
   if (isLoadingRestaurant || isLoadingMenu) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -39,6 +41,7 @@ export default function RestaurantDetailsPage() {
   const filteredMenu = menu.filter(m => {
     if (vegFilter && m.type !== vegFilter) return false;
     if (categoryFilter !== 'All' && m.category !== categoryFilter) return false;
+    if (searchQuery && !m.name.toLowerCase().includes(searchQuery.toLowerCase()) && !m.description.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
 
@@ -49,18 +52,46 @@ export default function RestaurantDetailsPage() {
     <div className="min-h-screen bg-white pb-24 font-sans">
       {/* App-like Header */}
       <header className="sticky top-0 bg-white/90 backdrop-blur-md z-30 shadow-sm p-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to={-1} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <Link to={-1} className="p-2 hover:bg-slate-100 rounded-full transition-colors shrink-0">
             <ArrowLeft size={24} className="text-slate-900" />
           </Link>
-          <div className="flex flex-col">
-            <h1 className="font-bold text-slate-900 text-lg leading-tight">{restaurant.name}</h1>
-            <p className="text-xs text-slate-500">{restaurant.distance} km away • {restaurant.eta}</p>
-          </div>
+          {showSearchInput ? (
+            <div className="flex-1 flex items-center gap-2 bg-slate-100 rounded-full px-3 py-1.5 mr-2">
+              <Search size={16} className="text-slate-400 shrink-0" />
+              <input 
+                type="text"
+                placeholder="Search dishes..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent border-0 outline-none w-full text-slate-800 text-sm font-bold placeholder-slate-400"
+                autoFocus
+              />
+              <button 
+                onClick={() => {
+                  setSearchQuery('');
+                  setShowSearchInput(false);
+                }} 
+                className="text-slate-400 hover:text-slate-600 font-extrabold text-xs px-1"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              <h1 className="font-bold text-slate-900 text-lg leading-tight truncate">{restaurant.name}</h1>
+              <p className="text-xs text-slate-500">{restaurant.distance} km away • {restaurant.eta}</p>
+            </div>
+          )}
         </div>
-        <button className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
-          <Search size={20} />
-        </button>
+        {!showSearchInput && (
+          <button 
+            onClick={() => setShowSearchInput(true)}
+            className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors shrink-0"
+          >
+            <Search size={20} />
+          </button>
+        )}
       </header>
 
       {/* Restaurant Image Gallery */}
