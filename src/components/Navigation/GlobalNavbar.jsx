@@ -7,19 +7,18 @@ export default function GlobalNavbar() {
   const location = useRouterLocation()
   const path = location.pathname
 
-  // Hide bottom navbar on checkout page to prevent overlapping the Confirm Order button
   if (path === '/checkout') return null
 
   const navItems = [
-    { label: 'Home', path: '/', icon: <Home size={20} /> },
-    { label: 'Profile', path: '/profile', icon: <User size={20} /> },
-    { label: 'Owner', path: '/owner/dashboard', icon: <Store size={20} /> },
-    { label: 'Watchman', path: '/watchman', icon: <ShieldCheck size={20} /> }
+    { label: 'Home', path: '/', icon: <Home size={18} /> },
+    { label: 'Profile', path: '/profile', icon: <User size={18} /> },
+    { label: 'Owner', path: '/owner/dashboard', icon: <Store size={18} /> },
+    { label: 'Watchman', path: '/watchman', icon: <ShieldCheck size={18} /> }
   ]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none p-3 flex justify-center">
-      <nav className="bg-slate-900/95 backdrop-blur-2xl border border-slate-800 text-white rounded-3xl p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex items-center justify-around w-full max-w-md pointer-events-auto relative">
+    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none p-2.5 flex justify-center">
+      <nav className="bg-slate-900/95 backdrop-blur-2xl border border-slate-800 text-white rounded-3xl p-1.5 sm:p-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex items-center justify-around w-[calc(100vw-1.5rem)] max-w-md pointer-events-auto relative">
         {navItems.map((item) => {
           const isActive =
             item.path === '/'
@@ -30,7 +29,7 @@ export default function GlobalNavbar() {
             <RouterLink
               key={item.label}
               to={item.path}
-              className={`relative flex flex-col items-center gap-1 py-1.5 px-3 rounded-2xl text-[11px] font-extrabold transition-all duration-200 ${
+              className={`relative flex flex-col items-center gap-1 py-1.5 px-2.5 sm:px-3.5 rounded-2xl text-[10px] sm:text-[11px] font-extrabold transition-all duration-200 ${
                 isActive ? 'text-amber-400' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
