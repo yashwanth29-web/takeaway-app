@@ -76,13 +76,13 @@ export default function TrackingPage() {
       </div>
 
       {/* Main Bottom Sheet Scroll Container */}
-      <div className="absolute top-[22vh] bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.12)] z-20 flex flex-col max-w-lg mx-auto w-full overflow-y-auto border-t border-slate-200/60">
+      <div className="absolute top-[20vh] md:top-[22vh] bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl md:rounded-3xl rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.12)] z-20 flex flex-col max-w-xl mx-auto w-full overflow-y-auto border-t border-slate-200/60 md:mb-6">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
           style={{ backgroundImage: "url('/bg-pickup.png')" }}
         />
 
-        <div className="relative z-10 p-4 sm:p-5 flex flex-col pb-32 space-y-4">
+        <div className="relative z-10 p-4 sm:p-6 flex flex-col pb-28 md:pb-12 space-y-4">
           <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-1 shrink-0" />
 
           <div className="text-center">
