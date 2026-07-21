@@ -85,23 +85,21 @@ export default function LandingPage() {
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col">
 
 
-      {/* --- HERO SECTION WITH AUTO-SLIDING BACKGROUNDS (MAX CLARITY & CREATIVE TOP BAR) --- */}
-      <div className="relative min-h-[50vh] w-full bg-slate-900 shrink-0 flex flex-col justify-between overflow-hidden pb-4">
-        {/* Sliding Background Image (High Opacity for perfect clarity) */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSlide}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.95 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${slides[activeSlide].image}')` }}
+      {/* --- HERO SECTION WITH AUTO-SLIDING BACKGROUNDS (ZERO BLACK FLASH STACKED CROSSFADE) --- */}
+      <div className="relative min-h-[50vh] w-full bg-slate-100 shrink-0 flex flex-col justify-between overflow-hidden pb-4">
+        {/* Stacked Background Images with smooth 1s crossfade transition */}
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+              index === activeSlide ? 'opacity-95' : 'opacity-0 pointer-events-none'
+            }`}
+            style={{ backgroundImage: `url('${slide.image}')` }}
           />
-        </AnimatePresence>
+        ))}
 
-        {/* Extremely soft, dark-to-light gradient overlay to preserve image center clarity */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-slate-50/90" />
+        {/* Extremely soft gradient overlay to preserve image center clarity */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-slate-50/95 pointer-events-none" />
 
         {/* Consolidated Top Bar Header Card */}
         <div className="relative z-10 w-full px-4 pt-4">
