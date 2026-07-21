@@ -69,53 +69,58 @@ export default function OwnerDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex font-sans selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-slate-900 text-slate-100 flex font-sans selection:bg-indigo-500/30 pt-16 lg:pt-20">
       {/* SIDEBAR (Glassmorphism) */}
       <div className="w-72 bg-slate-800/50 backdrop-blur-2xl border-r border-slate-700/50 hidden md:flex flex-col z-20 relative">
-        <div className="p-8 flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+        <div className="p-6 flex items-center gap-4 border-b border-slate-700/40">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0">
             <Compass size={26} strokeWidth={2.5} />
           </div>
           <div>
-            <span className="text-2xl font-black text-white tracking-tight block">TakeAway OS</span>
-            <span className="text-[10px] font-bold tracking-[0.2em] text-indigo-400 uppercase">Owner Command</span>
+            <span className="text-xl font-black text-white tracking-tight block leading-none">TakeAway OS</span>
+            <span className="text-[9px] font-bold tracking-[0.2em] text-indigo-400 uppercase mt-1 block">Owner Command</span>
           </div>
         </div>
 
         <nav className="flex-1 px-4 space-y-2 mt-4">
           <button
             onClick={() => setActiveTab('restaurants')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-xs transition-all cursor-pointer ${
               activeTab === 'restaurants'
-                ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
             }`}
           >
-            <Store size={20} />
+            <Store size={18} />
             Partner Network
           </button>
 
           <button
             onClick={() => setActiveTab('active')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-xs transition-all cursor-pointer ${
               activeTab === 'active'
-                ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
             }`}
           >
-            <Clock size={20} />
+            <Clock size={18} />
             Live Orders
+            {activeOrders.length > 0 && (
+              <span className="ml-auto text-[10px] bg-rose-500 text-white font-black px-2 py-0.5 rounded-full animate-pulse">
+                {activeOrders.length}
+              </span>
+            )}
           </button>
 
           <button
             onClick={() => setActiveTab('valet')}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-xs transition-all cursor-pointer ${
               activeTab === 'valet'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                ? 'bg-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/20'
+                : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
             }`}
           >
-            <Car size={20} />
+            <Car size={18} />
             Valet Parking
             <span className="ml-auto text-[9px] bg-amber-400/20 text-amber-300 font-extrabold px-2 py-0.5 rounded-full border border-amber-400/30">
               Pro
@@ -126,7 +131,7 @@ export default function OwnerDashboard() {
         <div className="p-4 border-t border-slate-800 space-y-2">
           <button
             onClick={() => navigate('/watchman')}
-            className="w-full flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-amber-500/10 rounded-2xl font-bold text-xs transition-colors border border-amber-500/20"
+            className="w-full flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-amber-500/10 rounded-2xl font-bold text-xs transition-colors border border-amber-500/20 cursor-pointer"
           >
             <ShieldCheck size={18} />
             Launch Watchman Portal
@@ -134,7 +139,7 @@ export default function OwnerDashboard() {
 
           <button
             onClick={() => navigate('/')}
-            className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-red-500/10 hover:text-red-400 rounded-2xl font-bold text-xs transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-red-500/10 hover:text-red-400 rounded-2xl font-bold text-xs transition-colors cursor-pointer"
           >
             <LogOut size={18} />
             Exit System
@@ -143,10 +148,10 @@ export default function OwnerDashboard() {
       </div>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 relative">
+      <div className="flex-1 flex flex-col h-[calc(100vh-4rem)] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 relative">
         <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <header className="bg-slate-900/50 backdrop-blur-xl border-b border-slate-800/50 p-4 sm:p-6 lg:px-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 z-10 sticky top-0">
+        <header className="bg-slate-900/60 backdrop-blur-xl border-b border-slate-800/60 p-4 sm:p-6 lg:px-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 z-10 sticky top-0">
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <button
               onClick={() => navigate('/')}
@@ -156,7 +161,7 @@ export default function OwnerDashboard() {
             </button>
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Command Center</h1>
-              <p className="text-slate-400 font-medium text-xs sm:text-sm mt-1 hidden sm:block">
+              <p className="text-slate-400 font-medium text-xs sm:text-sm mt-0.5 hidden sm:block">
                 Real-time marketplace telemetry, valet parking & vendor payouts.
               </p>
             </div>
@@ -193,10 +198,10 @@ export default function OwnerDashboard() {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleSimulate}
-              className={`w-full sm:w-auto flex justify-center items-center gap-2 px-5 py-2.5 rounded-2xl font-bold text-xs shadow-lg transition-all border ${
+              className={`w-full sm:w-auto flex justify-center items-center gap-2 px-5 py-2.5 rounded-2xl font-black text-xs shadow-lg transition-all border cursor-pointer ${
                 isSimulating
                   ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-amber-500/20'
-                  : 'bg-gradient-to-b from-amber-400 to-amber-600 text-slate-900 border-amber-400 hover:from-amber-300 hover:to-amber-500 shadow-amber-500/20'
+                  : 'bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 border-amber-300 hover:from-amber-300 hover:to-amber-400 shadow-amber-500/20'
               }`}
             >
               <Zap size={16} className={isSimulating ? 'animate-pulse' : ''} />
@@ -205,30 +210,48 @@ export default function OwnerDashboard() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6 lg:p-10 relative z-10">
-          {/* STATS OVERVIEW */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6">
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500/20 text-indigo-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
-                <DollarSign size={20} />
+        <main className="flex-1 overflow-y-auto p-6 lg:p-10 relative z-10 space-y-6">
+          {/* STATS OVERVIEW CARDS */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            {/* 1. REALIZED REVENUE CARD */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-indigo-500/30 p-5 sm:p-6 rounded-3xl shadow-xl relative overflow-hidden group hover:border-indigo-500/60 transition-colors">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center shadow-inner">
+                  <DollarSign size={22} />
+                </div>
+                <span className="text-[10px] font-black uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  +14.2% Growth
+                </span>
               </div>
-              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Realized Revenue</h3>
+              <h3 className="text-slate-400 font-bold text-xs uppercase tracking-wider mb-1">Realized Revenue</h3>
               <p className="text-2xl sm:text-4xl font-black text-white">${stats.platformRevenue}</p>
             </div>
 
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500/20 text-emerald-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
-                <TrendingUp size={20} />
+            {/* 2. VENDOR PAYOUTS CARD */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-emerald-500/30 p-5 sm:p-6 rounded-3xl shadow-xl relative overflow-hidden group hover:border-emerald-500/60 transition-colors">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center shadow-inner">
+                  <TrendingUp size={22} />
+                </div>
+                <span className="text-[10px] font-black uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  8 Vendors Settled
+                </span>
               </div>
-              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Vendor Payouts</h3>
+              <h3 className="text-slate-400 font-bold text-xs uppercase tracking-wider mb-1">Vendor Payouts</h3>
               <p className="text-2xl sm:text-4xl font-black text-white">${stats.totalPayouts}</p>
             </div>
 
-            <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg relative overflow-hidden group hover:border-amber-500/50 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500/20 text-amber-400 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4">
-                <Car size={20} />
+            {/* 3. TOTAL NETWORK ORDERS CARD */}
+            <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 p-5 sm:p-6 rounded-3xl shadow-xl relative overflow-hidden group hover:border-amber-500/60 transition-colors">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center shadow-inner">
+                  <Car size={22} />
+                </div>
+                <span className="text-[10px] font-black uppercase text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                  🟢 4 Active
+                </span>
               </div>
-              <h3 className="text-slate-400 font-bold text-xs sm:text-sm mb-1 uppercase tracking-wider">Total Network Orders</h3>
+              <h3 className="text-slate-400 font-bold text-xs uppercase tracking-wider mb-1">Total Network Orders</h3>
               <p className="text-2xl sm:text-4xl font-black text-white">{stats.totalOrders}</p>
             </div>
           </div>
@@ -254,7 +277,7 @@ export default function OwnerDashboard() {
                   </div>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-colors shadow-lg shadow-indigo-500/20"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs transition-all shadow-lg shadow-indigo-500/20 active:scale-95 cursor-pointer"
                   >
                     <Plus size={18} />
                     Add Partner
@@ -269,47 +292,47 @@ export default function OwnerDashboard() {
                     return (
                       <div
                         key={restaurant.id}
-                        className="bg-slate-800/30 backdrop-blur-md rounded-3xl border border-slate-700/50 p-6 shadow-xl flex flex-col gap-6 hover:border-slate-600/50 transition-colors"
+                        className="bg-slate-800/40 backdrop-blur-md rounded-3xl border border-slate-700/60 p-6 shadow-xl flex flex-col gap-6 hover:border-indigo-500/40 transition-all"
                       >
                         <div className="flex gap-5 items-center">
                           <img
                             src={restaurant.image}
                             alt={restaurant.name}
-                            className="w-20 h-20 rounded-2xl object-cover border border-slate-700 shadow-md"
+                            className="w-20 h-20 rounded-2xl object-cover border border-slate-700 shadow-md shrink-0"
                           />
-                          <div className="flex-1">
-                            <div className="flex justify-between items-start">
-                              <h3 className="font-black text-white text-xl">{restaurant.name}</h3>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start gap-2">
+                              <h3 className="font-black text-white text-xl truncate">{restaurant.name}</h3>
                               {restaurant.valetEnabled && (
-                                <span className="bg-amber-500/20 text-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30">
+                                <span className="bg-amber-500/20 text-amber-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-amber-500/30 shrink-0">
                                   Valet Enabled
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm font-medium text-slate-400">
-                              {restaurant.cuisine} • ID: {restaurant.id}
+                            <p className="text-xs font-bold text-slate-400 mt-0.5">
+                              {restaurant.cuisine} • <span className="font-mono text-slate-400">ID: {restaurant.id}</span>
                             </p>
                             <div className="mt-3 flex gap-6 text-sm font-bold">
                               <div className="flex flex-col">
                                 <span className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">Gross Volume</span>
-                                <span className="text-slate-200">${rStats.grossRevenue.toFixed(2)}</span>
+                                <span className="text-slate-200 font-mono font-black">${rStats.grossRevenue.toFixed(2)}</span>
                               </div>
                               <div className="w-px h-8 bg-slate-700" />
                               <div className="flex flex-col">
                                 <span className="text-slate-500 text-[10px] uppercase tracking-widest mb-1">Orders</span>
-                                <span className="text-slate-200">{rStats.totalOrders}</span>
+                                <span className="text-slate-200 font-mono font-black">{rStats.totalOrders}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Financial Bar */}
-                        <div className="bg-slate-900/50 rounded-2xl p-5 border border-slate-800 flex items-center justify-between">
+                        <div className="bg-slate-900/70 rounded-2xl p-4 sm:p-5 border border-slate-800 flex items-center justify-between gap-4">
                           <div className="flex flex-col">
                             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">
                               Pending Ledger
                             </span>
-                            <span className={`text-2xl font-black ${isOwed ? 'text-indigo-400' : 'text-slate-500'}`}>
+                            <span className={`text-2xl font-mono font-black ${isOwed ? 'text-emerald-400' : 'text-slate-500'}`}>
                               ${rStats.pendingPayout.toFixed(2)}
                             </span>
                           </div>
@@ -317,13 +340,13 @@ export default function OwnerDashboard() {
                           <button
                             onClick={() => processPayout(restaurant.id)}
                             disabled={!isOwed}
-                            className={`px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 transition-all ${
+                            className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-black text-xs flex items-center gap-2 transition-all cursor-pointer ${
                               isOwed
-                                ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-400'
-                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20 active:scale-95'
+                                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
                             }`}
                           >
-                            <CheckCircle2 size={18} />
+                            <CheckCircle2 size={16} />
                             {isOwed ? 'Disburse Funds' : 'Settled'}
                           </button>
                         </div>
