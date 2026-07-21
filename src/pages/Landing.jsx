@@ -507,7 +507,7 @@ export default function LandingPage() {
           </div>
 
           {/* OWNER & ACCOUNT QUICK LINKS */}
-          <div className="border-t border-slate-200/60 pt-6 pb-12 flex justify-center items-center gap-6 text-xs font-black text-slate-500">
+          <div className="border-t border-slate-200/60 pt-6 pb-32 flex justify-center items-center gap-6 text-xs font-black text-slate-500">
             <Link to="/owner/dashboard" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
               <ChefHat size={14} className="text-indigo-500" /> Owner Portal
             </Link>

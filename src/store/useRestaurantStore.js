@@ -7,11 +7,15 @@ const useRestaurantStore = create(
     (set, get) => ({
       restaurants: restaurantsData,
 
+      getRestaurantById: (id) => {
+        return get().restaurants.find((r) => r.id === id);
+      },
+
       addRestaurant: (newRest) => {
         set((state) => {
           // Generate a unique ID for the new restaurant
           const idNumber = state.restaurants.length + 1;
-          const newId = `r${idNumber}_${Date.now()}`; // Ensure uniqueness even with deletes (though we don't have deletes yet)
+          const newId = `r${idNumber}_${Date.now()}`;
           
           const restaurantEntry = {
             id: newId,
@@ -23,6 +27,7 @@ const useRestaurantStore = create(
             image: newRest.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=600',
             tags: newRest.tags || ['New'],
             address: newRest.address || '123 Test St',
+            valetEnabled: true,
             featured: false
           };
 

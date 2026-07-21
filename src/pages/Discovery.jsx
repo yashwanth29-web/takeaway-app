@@ -309,7 +309,7 @@ export default function DiscoveryPage() {
       </header>
       
       {/* Bottom Cards Drawer */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 pb-6 pt-12 bg-gradient-to-t from-slate-900/50 to-transparent pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 z-30 pb-24 pt-12 bg-gradient-to-t from-slate-900/50 to-transparent pointer-events-none">
         <div className="flex overflow-x-auto gap-4 px-4 pb-4 snap-x snap-mandatory hide-scrollbar pointer-events-auto" style={{ scrollbarWidth: 'none' }}>
           {restaurants.map((r) => (
             <div 
