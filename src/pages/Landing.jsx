@@ -102,7 +102,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-slate-50/95 pointer-events-none" />
 
         {/* Consolidated Top Bar Header Card */}
-        <div className="relative z-10 w-full px-4 pt-4">
+        <div className="relative z-10 w-full px-4 pt-4 md:pt-24">
           <header className="max-w-md mx-auto w-full bg-white/80 backdrop-blur-xl rounded-3xl p-4 shadow-xl border border-white/40 flex flex-col gap-3">
             {/* Top row: Logo & Cart */}
             <div className="flex justify-between items-center">

@@ -84,7 +84,7 @@ export default function RestaurantDetailsPage() {
   return (
     <div className="min-h-screen bg-slate-50 pb-28 font-sans">
       {/* Top Header Navbar */}
-      <header className="sticky top-0 bg-white/95 backdrop-blur-xl z-40 border-b border-slate-200/80 shadow-sm p-4">
+      <header className="sticky top-0 md:top-16 bg-white/95 backdrop-blur-xl z-40 border-b border-slate-200/80 shadow-sm p-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <button

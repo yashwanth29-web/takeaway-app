@@ -49,7 +49,7 @@ export default function WatchmanDashboard() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
       {/* Mobile Top Header */}
-      <header className="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between sticky top-0 z-30">
+      <header className="p-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between sticky top-0 md:top-16 z-30">
         <div className="flex items-center gap-2.5">
           <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold">
             <ShieldCheck size={22} />
