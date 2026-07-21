@@ -94,7 +94,7 @@ export default function CheckoutPage() {
       className="min-h-screen flex flex-col relative bg-cover bg-center bg-fixed font-sans selection:bg-indigo-500/20"
       style={{ backgroundImage: "url('/bg-pickup.png')" }}
     >
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-md z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-slate-950/20 z-0 pointer-events-none" />
 
       {/* Header */}
       <header className="p-4 flex items-center justify-between bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-sm z-20 sticky top-0">
@@ -120,7 +120,7 @@ export default function CheckoutPage() {
       </header>
 
       {/* Main Form Content */}
-      <div className="p-4 sm:p-6 flex-1 max-w-xl mx-auto w-full space-y-6 relative z-10 pb-36">
+      <div className="p-4 sm:p-6 flex-1 max-w-xl mx-auto w-full space-y-6 relative z-10 pb-56 md:pb-64">
         {/* Order Summary & Interactive Cart Items Card */}
         <div className="bg-white/95 backdrop-blur-xl p-5 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-200/80 space-y-5">
           <div className="flex justify-between items-center border-b border-slate-100 pb-3">
